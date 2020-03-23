@@ -2309,6 +2309,13 @@
   resolved "https://registry.yarnpkg.com/@types/configstore/-/configstore-2.1.1.tgz#cd1e8553633ad3185c3f2f239ecff5d2643e92b6"
   integrity sha1-zR6FU2M60xhcPy8jns/10mQ+krY=
 
+"@types/date-fns@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@types/date-fns/-/date-fns-2.6.0.tgz#b062ca46562002909be0c63a6467ed173136acc1"
+  integrity sha1-sGLKRlYgApCb4MY6ZGftFzE2rME=
+  dependencies:
+    date-fns "*"
+
 "@types/debug@^0.0.30":
   version "0.0.30"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
@@ -5798,7 +5805,7 @@ dataloader@^1.4.0:
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.4.0.tgz#bca11d867f5d3f1b9ed9f737bd15970c65dff5c8"
   integrity sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw==
 
-date-fns@^2.10.0:
+date-fns@*, date-fns@^2.10.0, date-fns@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.11.0.tgz#ec2b44977465b9dcb370021d5e6c019b19f36d06"
   integrity sha512-8P1cDi8ebZyDxUyUprBXwidoEtiQAawYPGvpfb+Dg0G6JrQ+VozwOmm91xYC0vAv1+0VmLehEPb+isg4BGUFfA==

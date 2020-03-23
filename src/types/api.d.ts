@@ -58,3 +58,25 @@ export interface PostcodeCodes {
   ced: string;
   nuts: string;
 }
+
+export interface AirtableAddressResult {
+  records: AirtableAddressRecord[];
+}
+
+export interface AirtableAddressRecord {
+  id: string;
+  fields: Fields;
+  createdTime: Date;
+}
+
+export interface Fields {
+  PostCode: string;
+  "Address Line 2": string;
+  "Next delivery date": Date;
+  "Address Line 1": string;
+  Areas: string[];
+  "Full Address": string;
+  Deliveries?: string[];
+  "Next delivery status"?: string[];
+  "Next delivery agent"?: string[];
+}

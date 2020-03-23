@@ -1,7 +1,6 @@
 import { AIRTABLE_API_KEY, AIRTABLE_BASE_ID } from './constants';
 import { suspendablePromise, fetchJSON, batchedPromise } from '../helpers/fetch';
-import { DeliveryArea, AirtableResult, PostcodesResult } from '../types/api';
-import queryString from 'query-string'
+import { DeliveryArea, PostcodesResult, AirtableAddressResult } from '../types/api';
 import { tuple } from '../helpers/array';
 
 export const fetchAreasThatNeedDeliveries = suspendablePromise(async (): Promise<DeliveryArea[]> => {
@@ -9,7 +8,7 @@ export const fetchAreasThatNeedDeliveries = suspendablePromise(async (): Promise
 })
 
 export async function getAddresses() {
-  return fetchJSON<AirtableResult<{ PostCode: string }>>(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Recipients`, {
+  return fetchJSON<AirtableAddressResult>(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Recipients`, {
     headers: {
       Authorization: `Bearer ${AIRTABLE_API_KEY}`
     }

@@ -5,6 +5,7 @@ import {
 } from 'aws-lambda'
 import { DeliveryArea, PostcodeResultElement } from '../types/api';
 import { getAddresses, getBulkPostcodeData } from '../data/apis';
+import { isToday, isFuture, differenceInDays } from 'date-fns'
 
 export async function handler(
   event: APIGatewayProxyEvent,
@@ -18,8 +19,14 @@ export async function handler(
   try {
     // get list of addresses from airtable
     const addresses = await getAddresses()
+    // filter addresses to those requiring a delivery to be scheduled in the next few days
+    const filteredAddresses = addresses.records.filter(r => {
+      const nextDeliveryDate = new Date(r.fields["Next delivery date"])
+      const isSoonish = isFuture(nextDeliveryDate) && differenceInDays(nextDeliveryDate, new Date()) < 14
+      return isToday(nextDeliveryDate) || isSoonish
+    })
     // collect delivery postcodes and request postcodes.io data for each
-    const postcodeData = await getBulkPostcodeData(addresses.records.map(r => r.fields.PostCode))
+    const postcodeData = await getBulkPostcodeData(filteredAddresses.map(r => r.fields.PostCode))
     // reduce postcodes to LSOA codes
     const codeMap = postcodeData
       .reduce((arr, res) => {

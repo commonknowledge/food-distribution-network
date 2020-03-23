@@ -43,6 +43,17 @@ export const theme = {
         opacity: 0.9,
       },
     },
+    block: {
+      display: 'block',
+      border: theme => `1px solid ${theme.colors.accent}`,
+      color: theme => `1px solid ${theme.colors.accent}`,
+      borderRadius: 3,
+      p: 2,
+      my: 2,
+      fontWeight: 600,
+      textAlign: 'center',
+      textDecoration: 'none'
+    }
   },
   buttons: {
     transition: "all 250ms ease-in-out",

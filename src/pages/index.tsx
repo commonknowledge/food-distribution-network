@@ -1,12 +1,14 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui"
 import { Suspense, useContext, Fragment } from 'react';
-import { fetchAreasThatNeedDeliveries } from '../data/apis';
+import { fetchAreasThatNeedDeliveries, fetchDepots } from '../data/apis';
 import { BackgroundMap } from '../components/map/background';
 import { DeliveryAreas } from '../components/map/deliveryareas';
 import { GlobalMapContextProvider, GlobalMapContext } from '../components/map/context';
+import { Depots } from '../components/map/depots';
 
 const requestAreaList = fetchAreasThatNeedDeliveries()
+const requestDepots = fetchDepots()
 
 const IndexPage = () => {
   return (
@@ -29,6 +31,7 @@ const IndexPage = () => {
           />
           <Suspense fallback={<h1>Loading map</h1>}>
             <DeliveryAreasMapLayer />
+            <DepotMapLayer />
           </Suspense>
         </div>
         <div sx={{ bg: 'white', p: 4, float: 'left', width: ['100%', 300] }}>
@@ -76,6 +79,24 @@ const DeliveryAreasMapLayer = () => {
 
   return (
     <DeliveryAreas areas={areas} />
+  )
+}
+
+const DepotMapLayer = () => {
+  const depots = requestDepots.read()
+
+  if (!depots) {
+    return null
+  }
+
+  const { map } = useContext(GlobalMapContext)
+
+  if (!map) {
+    return null
+  }
+
+  return (
+    <Depots depots={depots} />
   )
 }
 

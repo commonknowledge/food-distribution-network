@@ -1,12 +1,8 @@
 import { Record } from "airtable"
 
-export type DeliveryArea {
+export interface DeliveryArea {
   id: string
   addressCount?: number
-}
-
-export type AirtableResult<T = any> = {
-  records: Record<T>[]
 }
 
 export interface PostcodesResult {
@@ -59,17 +55,11 @@ export interface PostcodeCodes {
   nuts: string;
 }
 
-export interface AirtableAddressResult {
-  records: AirtableAddressRecord[];
+export interface AirtableResult<T> {
+  records: Record<T>[];
 }
 
-export interface AirtableAddressRecord {
-  id: string;
-  fields: Fields;
-  createdTime: Date;
-}
-
-export interface Fields {
+export interface AddressFields {
   PostCode: string;
   "Address Line 2": string;
   "Next delivery date": Date;
@@ -79,4 +69,14 @@ export interface Fields {
   Deliveries?: string[];
   "Next delivery status"?: string[];
   "Next delivery agent"?: string[];
+}
+
+export interface DepotFields {
+  Name: string;
+  "Volunteer link": string;
+  "Contact phone": string;
+  Address: string;
+  Postcode: string;
+  Description: string;
+  "Has food?": boolean;
 }

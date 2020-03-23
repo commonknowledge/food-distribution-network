@@ -1,24 +1,20 @@
-import { AIRTABLE_API_KEY, AIRTABLE_BASE_ID } from './constants';
 import { suspendablePromise, fetchJSON, batchedPromise } from '../helpers/fetch';
-import { DeliveryArea, PostcodesResult, AirtableAddressResult } from '../types/api';
+import { DeliveryArea, PostcodesResult, PostcodeResultElement } from '../types/api';
 import { tuple } from '../helpers/array';
+import { DepotGeoJSONFeature, DeliveryAreaResult } from '../functions/lib/server';
 
-export const fetchAreasThatNeedDeliveries = suspendablePromise(async (): Promise<DeliveryArea[]> => {
+export const fetchAreasThatNeedDeliveries = suspendablePromise(async (): Promise<DeliveryAreaResult> => {
   return fetchJSON(process.env.GATSBY_FUNCTIONS_URL + '/delivery-areas')
 })
 
-export async function getAddresses() {
-  return fetchJSON<AirtableAddressResult>(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Recipients`, {
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`
-    }
-  })
-}
+export const fetchDepots = suspendablePromise(async (): Promise<DepotGeoJSONFeature> => {
+  return fetchJSON(process.env.GATSBY_FUNCTIONS_URL + '/depots') as any
+})
 
 const POSTCODES_IO_BULK_QUERY_LIMIT = 100
 
 export async function getBulkPostcodeData(codes: string[]) {
-  return batchedPromise(
+  const data = await batchedPromise(
     codes,
     POSTCODES_IO_BULK_QUERY_LIMIT,
     postcodes => fetchJSON<PostcodesResult>("https://api.postcodes.io/postcodes", {
@@ -29,6 +25,13 @@ export async function getBulkPostcodeData(codes: string[]) {
       body: JSON.stringify({ postcodes })
     })
   )
+  return data
+    .reduce((arr, res) => {
+      if (!!res.error || !Array.isArray(res.result)) {
+        throw new Error(res.error)
+      }
+      return [...arr, ...res.result]
+    }, [] as PostcodeResultElement[])
 }
 
 export const convertPostcodeToCoordinates = async (

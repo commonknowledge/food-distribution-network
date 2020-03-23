@@ -2,7 +2,7 @@ import {
   APIGatewayProxyEvent,
   APIGatewayProxyCallback
 } from 'aws-lambda'
-import { getDeliveryAreas } from './lib/server'
+import { getDepotGeoJSONFeatureset } from './lib/server';
 
 export async function handler(
   event: APIGatewayProxyEvent,
@@ -14,14 +14,14 @@ export async function handler(
   let errors: Error[] = []
 
   try {
-    data = await getDeliveryAreas()
+    data = await getDepotGeoJSONFeatureset()
   } catch (e) {
     errors = errors.concat(e.toString())
     statusCode = 400
   }
 
   callback(null, {
-    statusCode,
+    statusCode: 200,
     headers: {
       'Content-Type': 'application/json'
     },

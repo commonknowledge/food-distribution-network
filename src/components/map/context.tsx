@@ -54,9 +54,11 @@ export const GlobalMapContextProvider: React.FC = ({ children }) => {
 
   return (
     <GlobalMapContext.Provider key={map.current?.toString()} value={context}>
-      <MapContext.Provider key={mapHelpers.current?.toString()} value={context.map || undefined}>
-        {children}
-      </MapContext.Provider>
+      {typeof window !== 'undefined' && (
+        <MapContext.Provider key={mapHelpers.current?.toString()} value={context.map || undefined}>
+          {children}
+        </MapContext.Provider>
+      )}
     </GlobalMapContext.Provider>
   )
 }

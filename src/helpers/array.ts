@@ -1,0 +1,1 @@
+export const tuple = <T extends unknown[]>(...xs: T) => xs

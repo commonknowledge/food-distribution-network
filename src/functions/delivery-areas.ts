@@ -14,7 +14,6 @@ export async function handler(
   let statusCode = 200
   let data
   let errors: Error[] = []
-  console.log(statusCode)
 
   try {
     // get list of addresses from airtable
@@ -35,14 +34,12 @@ export async function handler(
         areas[code] = areas[code] ? areas[code] + 1 : 1
         return areas
       }, {} as { [key: string]: number })
-    const codes: DeliveryArea[] = Object.entries(codeMap).map(([id, count]) => ({ id, count }))
+    const codes: DeliveryArea[] = Object.entries(codeMap).map(([id, addressCount]) => ({ id, addressCount }))
     data = { codes }
   } catch (e) {
     errors = errors.concat(e.toString())
     statusCode = 400
   }
-
-  console.log(data)
 
   callback(null, {
     statusCode,

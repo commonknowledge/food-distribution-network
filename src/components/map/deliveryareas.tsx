@@ -33,6 +33,19 @@ export const DeliveryAreas: React.FC<{ areas: DeliveryArea[] }> = ({ areas }) =>
     false
   ]
 
+  const generatelabelForArea = (a: DeliveryArea): string => {
+    return `${a.addressCount} addresses`
+  }
+
+  const areaLabels = [
+    'match',
+    ['get', GATSBY_MAPBOX_DELIVERY_AREA_ID_PROPERTY],
+    ...areas.reduce((arr, a) => [...arr, a.id, generatelabelForArea(a)], [] as any[]),
+    ""
+  ]
+
+  console.log(areaLabels)
+
   return (
     <React.Fragment>
       {/* deliveryArea fills */}
@@ -46,6 +59,18 @@ export const DeliveryAreas: React.FC<{ areas: DeliveryArea[] }> = ({ areas }) =>
         paint={{
           'fill-color': '#74DD59',
           'fill-opacity': 0.5
+        }}
+        filter={filter}
+      />
+      <Layer
+        key="delivery-area-symbol"
+        id="delivery-area-symbol"
+        sourceId="composite"
+        sourceLayer={GATSBY_MAPBOX_DELIVERY_AREA_SOURCE_LAYER_ID}
+        before="lsoa-fill"
+        type="symbol"
+        layout={{
+          'text-field': areaLabels
         }}
         filter={filter}
       />
